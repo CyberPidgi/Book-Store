@@ -1,5 +1,4 @@
 import express from "express";
-import { PORT, MONGODBURL } from "./config.js";
 import mongoose from "mongoose";
 import cors from 'cors';
 import booksRoute from "./router/booksRoute.js"
@@ -30,7 +29,12 @@ app.get('/', (request, response) => {
 // Books Route
 app.use('/books', booksRoute);
 
+
 // Connecting mongoose
+const PORT = process.env.DBPORT;
+const USERNAME = process.env.MONGOUSERNAME;
+const PASSWORD = process.env.MONGOPASSWORD;
+const MONGODBURL = `mongodb+srv://${USERNAME}:${PASSWORD}@bookstore.8lavb9q.mongodb.net/books-collection?retryWrites=true&w=majority&appName=BookStore`;
 
 mongoose
     .connect(MONGODBURL)
@@ -41,6 +45,7 @@ mongoose
         });
     })
     .catch((error) => {
+        console.log(MONGODBURL);
         console.log(error);
     });
 
